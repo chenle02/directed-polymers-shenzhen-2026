@@ -1,0 +1,406 @@
+/* ============================================================
+   Polymer Talk — Dark chalkboard palette
+   Inspired by NotebookLM video:
+     blue  #ADD8E6  (Brownian motion / clean math)
+     pink  #FFB6C1  (polymer / tilted measure)
+     lime  #CCFF33  (highlights / section titles)
+     chalk #E8E8E8  (body text on dark bg)
+   ============================================================ */
+
+/* ---------- layout helpers ---------- */
+.flex-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+}
+
+.flex-container img {
+  max-width: 500px;
+  height: auto;
+  border-radius: 10%;
+  margin: 0 20px;
+}
+
+/* ---------- coauthor / photo cards ---------- */
+.coauthor-container {
+  display: inline-block;
+  text-align: center;
+  margin: 0 20px;
+}
+.coauthor-container img {
+  width: 220px;
+  height: auto;
+  border-radius: 15%;
+}
+.coauthor-container p {
+  margin-top: 8px;
+  font-size: 26px;
+}
+
+/* ---------- video ---------- */
+.SimulationVideo {
+  width: 680px;
+  max-width: 90vw;
+  border-radius: 6px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+
+/* Image-backdrop slides (colored-noise motivation slides).
+   Text anchored top-right with a subtle dark scrim for contrast. */
+.reveal .slides section.image-backdrop {
+  padding: 0 !important;
+  /* Do NOT override `position` — Reveal uses position:absolute for
+     sections in a vertical stack; forcing `relative` makes them flow
+     in document order and pushes later sibling slides off-screen. */
+}
+.backdrop-caption {
+  position: absolute;
+  top: 6%;
+  right: 5%;
+  max-width: 46%;
+  text-align: right;
+  padding: 0;
+  background: none;            /* no scrim — text floats over the image */
+  border-radius: 0;
+  /* Heavy multi-layer text shadow = readable over any background
+     without an opaque box behind it. */
+  text-shadow:
+    0 0 3px rgba(0, 0, 0, 0.95),
+    0 0 6px rgba(0, 0, 0, 0.85),
+    0 0 12px rgba(0, 0, 0, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.9);
+  -webkit-text-stroke: 0.4px rgba(0, 0, 0, 0.6);  /* subtle outline */
+}
+
+/* Full-slide video with controls — used for the 4 Manim animations so the
+   presenter can pause/scrub/jump to a specific moment.  Paired with
+   a 16:9 Reveal canvas (1280×720) so the video fills the viewport. */
+.reveal .slides section.fullscreen-slide {
+  padding: 0 !important;
+}
+/* Credit line overlaid on fullscreen videos (bottom-left, subtle). */
+.video-credit {
+  position: absolute;
+  bottom: 36px;
+  left: 36px;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.85);
+  font-style: italic;
+  z-index: 10;
+  text-shadow: 0 0 4px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.7);
+  pointer-events: auto;  /* allow the link to be clickable */
+}
+.video-credit a:hover { text-decoration: underline !important; }
+
+.FullscreenVideo {
+  /* Size matches Reveal's 1280x720 slide canvas. */
+  width: 1280px;
+  height: 720px;
+  object-fit: contain;
+  background: #000;
+  display: block;
+  margin: 0;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  justify-items: center;
+  align-items: center;
+}
+.video-grid video {
+  width: 100%;
+  max-height: 200px;
+}
+
+/* ---------- split-screen for BM vs polymer ---------- */
+.split-screen {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 30px;
+}
+.split-panel {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+}
+.split-panel.bm {
+  border-right: 2px solid rgba(255,255,255,0.15);
+}
+
+/* ---------- theorem / definition boxes ---------- */
+.theorem {
+  background: rgba(51, 0, 34, 0.7);
+  border-left: 4px solid #FFB6C1;
+  padding: 18px 24px;
+  margin: 16px 0;
+  text-align: left;
+  border-radius: 4px;
+}
+.definition {
+  background: rgba(0, 34, 51, 0.7);
+  border-left: 4px solid #ADD8E6;
+  padding: 18px 24px;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+.highlight-box {
+  background: rgba(40, 50, 10, 0.7);
+  border-left: 4px solid #CCFF33;
+  padding: 18px 24px;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+
+/* ---------- dramatic reveal ---------- */
+.reveal-dramatic {
+  font-size: 1.6em;
+  color: #FFB6C1;
+  text-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+}
+.singular-symbol {
+  font-size: 1.5em;
+  color: #FF4444;
+  text-shadow: 0 0 30px rgba(255, 68, 68, 0.6);
+}
+.equivalent-symbol {
+  font-size: 1.5em;
+  color: #44FF88;
+  text-shadow: 0 0 30px rgba(68, 255, 136, 0.6);
+}
+
+/* ---------- timeline ---------- */
+.timeline {
+  position: relative;
+  padding: 10px 0;
+  list-style: none;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: rgba(255,255,255,0.2);
+  transform: translateX(-50%);
+}
+.timeline li {
+  position: relative;
+  margin: 12px 0;
+  padding: 8px 20px;
+  font-size: 0.85em;
+}
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: #CCFF33;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ---------- spectral hierarchy table ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  text-align: center;
+  padding: 10px 8px;
+  font-size: 0.85em;
+}
+th {
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  color: #CCFF33;
+}
+tr:nth-child(even) {
+  background-color: rgba(255,255,255,0.04);
+}
+
+/* ---------- typography ---------- */
+section h3 {
+  color: #CCFF33;
+}
+section h4 {
+  margin-bottom: 30px;
+  color: #E8E8E8;
+}
+
+.left-text {
+  text-align: left;
+}
+
+.source {
+  font-size: 0.6em;
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+  color: #888;
+}
+
+/* ---------- image defaults ---------- */
+img {
+  max-height: 500px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 8%;
+}
+
+/* photo gallery row */
+.photo-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.photo-row img {
+  height: 520px;
+  width: auto;
+  max-width: 48%;
+  object-fit: contain;
+  border-radius: 8%;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+}
+
+/* ---------- bibtex references ---------- */
+.bibtexnumber {
+  font-size: 15pt;
+  text-align: right;
+}
+.bibtexitem {
+  font-size: 15pt;
+  text-align: right;
+}
+
+/* ---------- block layout (video + text side by side) ---------- */
+.block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.block video {
+  flex: 1;
+  flex-basis: 60%;
+  max-width: 60%;
+}
+
+/* ---------- dedication styling ---------- */
+.dedication {
+  font-style: italic;
+  color: #ADD8E6;
+  font-size: 0.9em;
+  margin-top: 20px;
+}
+
+/* ---------- open problem / mystery ---------- */
+.mystery {
+  background: rgba(60, 0, 0, 0.5);
+  border: 1px dashed rgba(255,100,100,0.4);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+/* ---------- title slide ---------- */
+.title-slide {
+  position: relative;
+}
+
+/* Faint SHE-equation watermark in the corner — sets the mathematical
+ * subject in tone before any words are read. */
+.title-watermark {
+  position: absolute;
+  top: -14px;
+  right: 8px;
+  color: rgba(204, 255, 51, 0.10);
+  font-size: 22px;
+  letter-spacing: 0.3px;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.title-main {
+  margin: 6px 0 0;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  line-height: 1.18;
+}
+
+/* Lime gradient horizontal rule — visually splits title from byline. */
+.title-rule {
+  border: none;
+  height: 2px;
+  width: 56%;
+  margin: 28px auto 22px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(204, 255, 51, 0.65) 30%,
+    rgba(204, 255, 51, 0.65) 70%,
+    transparent 100%);
+}
+
+.title-speaker {
+  font-size: 30px;
+  margin: 6px 0 4px;
+  letter-spacing: 0.3px;
+}
+.title-speaker .speaker-name {
+  color: #E8E8E8;
+  font-weight: 700;
+}
+.title-speaker .speaker-affil {
+  color: #888;
+  font-style: italic;
+  margin-left: 10px;
+}
+
+.title-coauthors {
+  font-size: 22px;
+  color: #bbb;
+  margin: 0 0 26px;
+  letter-spacing: 0.2px;
+}
+.title-coauthors .coauthors-label {
+  color: #777;
+  font-style: italic;
+  margin-right: 10px;
+}
+.title-coauthors strong {
+  color: #d8d8d8;
+  font-weight: 600;
+}
+.title-coauthors .affil {
+  color: #888;
+  font-weight: 400;
+  margin-left: 4px;
+}
+.title-coauthors .dot {
+  color: #555;
+  margin: 0 8px;
+}
+
+.title-venue {
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  padding-top: 14px;
+  margin-top: 6px;
+}
+.title-venue .venue-name {
+  font-size: 21px;
+  color: #bbb;
+  margin: 0 0 4px;
+}
+.title-venue .venue-where {
+  font-size: 18px;
+  color: #888;
+  margin: 0;
+  letter-spacing: 0.4px;
+}
