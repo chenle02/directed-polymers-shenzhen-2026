@@ -74,12 +74,11 @@ covering both trace-class and non-trace-class regimes.
 
 ### Manim animations
 
-Four Manim-rendered scenes carry the main ideas:
+Three Manim-rendered scenes carry the main ideas:
 
 - **Scene A** — Discrete → continuous polymer via Donsker refinement
 - **Scene B** — Brownian motion vs. polymer path (locally identical, globally singular)
 - **Scene C** — Martingale collapse on a dyadic skeleton
-- **Scene D** — Phase diagram: trace-class threshold and disorder phases
 
 ---
 
